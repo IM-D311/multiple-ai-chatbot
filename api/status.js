@@ -1,27 +1,22 @@
+// api/status.js
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-  
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-  
-  const hasOpenAI = !!process.env.OPENAI_API_KEY;
+  // Check for FREE API keys
   const hasDeepSeek = !!process.env.DEEPSEEK_API_KEY;
   const hasGemini = !!process.env.GEMINI_API_KEY;
   
   return res.status(200).json({
     success: true,
-    message: 'Multi-AI Assistant API',
+    message: 'Multi-AI Assistant',
+    free_apis_available: hasDeepSeek || hasGemini,
+    setup_required: !hasDeepSeek && !hasGemini,
+    instructions: 'Get FREE API keys from: DeepSeek (https://platform.deepseek.com) and Gemini (https://aistudio.google.com)',
     services: {
-      chatgpt: hasOpenAI,
-      deepseek: hasDeepSeek,
-      gemini: hasGemini
+      deepseek: hasDeepSeek ? '✅ FREE API configured' : '❌ Get free key',
+      gemini: hasGemini ? '✅ FREE API configured' : '❌ Get free key',
+      chatgpt: '⚠️ Needs OpenAI credit (or use DeepSeek/Gemini)'
     },
-    available: hasOpenAI || hasDeepSeek || hasGemini,
-    timestamp: new Date().toISOString()
+    note: 'DeepSeek and Gemini have FREE tiers - no payment required!'
   });
 }
