@@ -1287,36 +1287,68 @@
         }
         
         // ========== BACKEND API CALL ==========
+        // async function callBackendAPI(message, aiType) {
+        //     console.log(`📞 Calling ${aiType} via backend...`);
+            
+        //     const response = await fetch(API_ENDPOINTS.chat, {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({
+        //             message: message,
+        //             ai: aiType,
+        //             user: currentUserEmail
+        //         })
+        //     });
+            
+        //     if (!response.ok) {
+        //         const errorText = await response.text();
+        //         console.error(`❌ Backend API Error:`, errorText);
+        //         throw new Error(`${response.status}: ${response.statusText}`);
+        //     }
+            
+        //     const data = await response.json();
+        //     console.log(`✅ Backend Response:`, data);
+            
+        //     if (data.error) {
+        //         throw new Error(data.error);
+        //     }
+            
+        //     return data.response || data.message || "No response from AI";
+        // }
+
         async function callBackendAPI(message, aiType) {
-            console.log(`📞 Calling ${aiType} via backend...`);
-            
-            const response = await fetch(API_ENDPOINTS.chat, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    message: message,
-                    ai: aiType,
-                    user: currentUserEmail
-                })
-            });
-            
-            if (!response.ok) {
-                const errorText = await response.text();
-                console.error(`❌ Backend API Error:`, errorText);
-                throw new Error(`${response.status}: ${response.statusText}`);
-            }
-            
-            const data = await response.json();
-            console.log(`✅ Backend Response:`, data);
-            
-            if (data.error) {
-                throw new Error(data.error);
-            }
-            
-            return data.response || data.message || "No response from AI";
-        }
+    console.log(`📞 Calling ${aiType} via backend...`);
+    
+    const response = await fetch(API_ENDPOINTS.chat, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            message: message,
+            ai: aiType,
+            user: currentUserEmail
+        })
+    });
+    
+    if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`❌ Backend API Error:`, errorText);
+        throw new Error(`${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    console.log(`✅ Backend Response:`, data);
+    
+    if (data.error) {
+        throw new Error(data.error);
+    }
+    
+    // FIX: Return the response from the correct field
+    return data.response || data.reply || data.message || "No response from AI";
+}
         
         // ========== AI SELECTION LOGIC ==========
         function determineAI(query) {
@@ -1494,4 +1526,5 @@
         }
     </script>
 </body>
+
 </html>
