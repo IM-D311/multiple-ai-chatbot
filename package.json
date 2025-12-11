@@ -1,18 +1,15 @@
 {
   "name": "multi-ai-assistant",
   "version": "1.0.0",
-  "description": "Secure Multi-AI Assistant with Vercel Serverless Functions",
+  "description": "Multi-AI Assistant with ChatGPT, DeepSeek, and Gemini",
   "main": "index.html",
   "scripts": {
     "dev": "vercel dev",
     "deploy": "vercel --prod"
   },
   "dependencies": {
-    "openai": "^4.0.0",
-    "@google/generative-ai": "^0.1.0"
-  },
-  "devDependencies": {
-    "vercel": "^28.0.0"
+    "openai": "^4.20.1",
+    "@google/generative-ai": "^0.13.0"
   },
   "engines": {
     "node": ">=18"
