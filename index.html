@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-AI Assistant | ChatGPT + DeepSeek + Gemini</title>
+    <title>Multi-AI Assistant | Your Personal AI Accounts</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -114,20 +114,19 @@
             flex-direction: column;
         }
 
-        /* FIXED: Increased chat container height */
         .chat-container {
             display: flex;
             flex-direction: column;
-            height: 80vh; /* Increased from 70vh to 80vh */
-            min-height: 600px; /* Added minimum height */
-            max-height: calc(100vh - 200px); /* Added maximum height */
+            height: 75vh;
+            min-height: 500px;
+            max-height: calc(100vh - 200px);
             background: rgba(30, 41, 59, 0.7);
             border-radius: 16px;
             overflow: hidden;
             border: 1px solid #334155;
             backdrop-filter: blur(10px);
             margin-bottom: 30px;
-            flex-shrink: 0; /* Prevent shrinking */
+            flex-shrink: 0;
         }
 
         .chat-header {
@@ -137,7 +136,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-shrink: 0; /* Prevent shrinking */
+            flex-shrink: 0;
         }
 
         .ai-info {
@@ -185,7 +184,7 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-            min-height: 0; /* Important for flex scrolling */
+            min-height: 0;
         }
 
         .message {
@@ -239,6 +238,7 @@
 
         .message-text {
             color: #f1f5f9;
+            line-height: 1.6;
         }
 
         .message-text a {
@@ -282,7 +282,7 @@
             padding: 20px;
             background: rgba(15, 23, 42, 0.9);
             border-top: 1px solid #334155;
-            flex-shrink: 0; /* Prevent shrinking */
+            flex-shrink: 0;
         }
 
         .input-wrapper {
@@ -397,7 +397,7 @@
             text-align: center;
             color: #94a3b8;
             font-size: 14px;
-            flex-shrink: 0; /* Prevent shrinking */
+            flex-shrink: 0;
         }
 
         .api-key-setup {
@@ -639,7 +639,6 @@
             color: #ef4444;
         }
 
-        /* Remember Me Checkbox Styles */
         .remember-me {
             display: flex;
             align-items: center;
@@ -674,11 +673,10 @@
                 justify-content: center;
             }
             
-            /* FIXED: Responsive chat container */
             .chat-container {
-                height: 75vh; /* Adjusted for mobile */
-                min-height: 500px; /* Reduced minimum height for mobile */
-                max-height: calc(100vh - 180px); /* Adjusted for mobile */
+                height: 70vh;
+                min-height: 400px;
+                max-height: calc(100vh - 180px);
             }
             
             .message {
@@ -701,10 +699,9 @@
         }
 
         @media (max-width: 480px) {
-            /* FIXED: Further adjustments for very small screens */
             .chat-container {
-                height: 70vh;
-                min-height: 400px;
+                height: 65vh;
+                min-height: 350px;
                 max-height: calc(100vh - 150px);
                 margin-bottom: 20px;
             }
@@ -721,14 +718,40 @@
                 padding: 15px;
             }
         }
+
+        .credential-status {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: 10px;
+        }
+
+        .credential-status.connected {
+            background: rgba(16, 163, 127, 0.2);
+            color: #10a37f;
+        }
+
+        .credential-status.not-connected {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .account-info {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
-    <!-- Login Modal (Always shows first) -->
+    <!-- Login Modal -->
     <div id="loginModal" class="modal active">
         <div class="modal-content" style="max-width: 400px;">
-            <h2><i class="fas fa-sign-in-alt"></i> Multi-AI Assistant</h2>
-            <p>Login to access AI capabilities</p>
+            <h2><i class="fas fa-sign-in-alt"></i> AI Assistant Login</h2>
+            <p>Enter your credentials to access AI services</p>
             
             <div class="api-input-group">
                 <label for="loginEmail">
@@ -744,11 +767,10 @@
                 <input type="password" id="loginPassword" placeholder="••••••••">
             </div>
             
-            <!-- Remember Me Checkbox -->
             <div class="remember-me">
                 <input type="checkbox" id="rememberMe">
                 <label for="rememberMe">
-                    <i class="fas fa-check-circle"></i> Remember Me for 30 days
+                    <i class="fas fa-check-circle"></i> Remember me for 30 days
                 </label>
             </div>
             
@@ -764,7 +786,7 @@
             
             <p class="note">
                 <i class="fas fa-info-circle"></i> 
-                Public users can use the assistant. Admin login required for API settings.
+                This system uses YOUR personal AI accounts to get real responses.
             </p>
         </div>
     </div>
@@ -774,7 +796,7 @@
             <div class="header-content">
                 <div class="logo">
                     <i class="fas fa-robot"></i>
-                    <span id="siteTitle">Multi-AI Assistant</span>
+                    <span id="siteTitle">Your AI Assistant</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 15px;">
                     <div class="ai-selector">
@@ -791,8 +813,8 @@
                             <i class="fas fa-image"></i> Gemini
                         </button>
                     </div>
-                    <button id="openApiConfig" class="api-config-btn" style="display: none;">
-                        <i class="fas fa-key"></i> Admin Settings
+                    <button id="setupCredentials" class="api-config-btn" style="display: none;">
+                        <i class="fas fa-cog"></i> Setup Credentials
                     </button>
                 </div>
             </div>
@@ -808,14 +830,15 @@
                     </div>
                     <div>
                         <div class="ai-name">Auto AI Selector</div>
-                        <div class="ai-description">Login to access real AI capabilities</div>
+                        <div class="ai-description">Uses YOUR personal AI accounts</div>
+                        <div class="account-info" id="accountInfo">Not logged in</div>
                     </div>
                 </div>
                 <div class="loading" id="statusIndicator">
                     <i class="fas fa-circle" style="color: #ef4444;"></i>
-                    <span id="statusText">Not Logged In</span>
+                    <span id="statusText">Waiting for login</span>
                     <span id="apiMode" class="api-mode-indicator inactive">
-                        <i class="fas fa-plug"></i> Login Required
+                        <i class="fas fa-plug"></i> Credentials Needed
                     </span>
                 </div>
             </div>
@@ -827,12 +850,22 @@
                     </div>
                     <div class="message-content">
                         <div class="message-text">
-                            <strong>Welcome to Multi-AI Assistant!</strong><br><br>
-                            Please login to use the AI assistant. All users share the same AI capabilities.<br><br>
-                            • <strong>ChatGPT</strong> for reasoning, writing, creative tasks<br>
-                            • <strong>DeepSeek</strong> for coding, math, technical queries<br>
-                            • <strong>Gemini</strong> for images, vision, multimodal tasks<br><br>
-                            <em>Admin login required for API configuration.</em>
+                            <strong>🚀 Welcome to Your Personal AI Assistant!</strong><br><br>
+                            This system uses <strong>YOUR personal AI accounts</strong> to get real answers.<br><br>
+                            <strong>How it works:</strong><br>
+                            1. Login with your credentials<br>
+                            2. Ask any question<br>
+                            3. System detects which AI to use<br>
+                            4. Logs into YOUR account automatically<br>
+                            5. Gets real answer from YOUR AI<br>
+                            6. Shows response here<br><br>
+                            
+                            <strong>Supported AI:</strong><br>
+                            • <strong>ChatGPT</strong> - Writing, creative tasks, general knowledge<br>
+                            • <strong>DeepSeek</strong> - Coding, math, technical problems<br>
+                            • <strong>Gemini</strong> - Images, visual analysis, creative content<br><br>
+                            
+                            <em>Your credentials are stored securely and only used to access your accounts.</em>
                         </div>
                         <div class="message-time">Just now</div>
                     </div>
@@ -841,16 +874,19 @@
             
             <div class="chat-input-container">
                 <div class="input-wrapper">
-                    <textarea id="userInput" placeholder="Please login to use the AI assistant..." rows="1" disabled></textarea>
+                    <textarea id="userInput" placeholder="Please login to use AI assistant..." rows="1" disabled></textarea>
                     <button id="sendBtn" disabled>
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </div>
                 <div class="api-key-setup">
-                    <strong><i class="fas fa-user"></i> Status:</strong> 
-                    <span id="apiStatusText">Please login to use the assistant</span>
+                    <strong><i class="fas fa-user-circle"></i> Status:</strong> 
+                    <span id="apiStatusText">Login required to use YOUR AI accounts</span>
                     <button id="quickLogin" style="margin-left: 10px; padding: 4px 8px; background: transparent; border: 1px solid #60a5fa; color: #60a5fa; border-radius: 4px; cursor: pointer;">
                         <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <button id="testConnection" style="margin-left: 10px; padding: 4px 8px; background: transparent; border: 1px solid #10a37f; color: #10a37f; border-radius: 4px; cursor: pointer;">
+                        <i class="fas fa-plug"></i> Test Connection
                     </button>
                 </div>
             </div>
@@ -861,50 +897,124 @@
                 <div class="feature-icon">
                     <i class="fas fa-comment-dots"></i>
                 </div>
-                <h3 class="feature-title">ChatGPT</h3>
-                <p class="feature-desc">Best for reasoning, creative writing, brainstorming, and general conversation. Uses GPT-4 technology for nuanced understanding and human-like responses.</p>
+                <h3 class="feature-title">ChatGPT (Your Account)</h3>
+                <p class="feature-desc">Uses YOUR ChatGPT account for real responses. Best for writing, creative tasks, brainstorming, and general conversation. The system automatically logs into your account to get answers.</p>
+                <div class="credential-status not-connected" id="chatgptStatus">
+                    <i class="fas fa-times-circle"></i> Not configured
+                </div>
             </div>
             
             <div class="feature-card">
                 <div class="feature-icon">
                     <i class="fas fa-code"></i>
                 </div>
-                <h3 class="feature-title">DeepSeek</h3>
-                <p class="feature-desc">Specialized for coding, mathematics, technical problem-solving, and logical reasoning. Excellent for debugging, algorithm design, and data analysis.</p>
+                <h3 class="feature-title">DeepSeek (Your Account)</h3>
+                <p class="feature-desc">Uses YOUR DeepSeek account for coding assistance. Specialized for programming, mathematics, technical problem-solving, and logical reasoning. Automatically accesses your account for responses.</p>
+                <div class="credential-status not-connected" id="deepseekStatus">
+                    <i class="fas fa-times-circle"></i> Not configured
+                </div>
             </div>
             
             <div class="feature-card">
                 <div class="feature-icon">
                     <i class="fas fa-image"></i>
                 </div>
-                <h3 class="feature-title">Gemini</h3>
-                <p class="feature-desc">Optimized for image analysis, multimodal tasks, visual understanding, and Google ecosystem integration. Great for content generation with visual context.</p>
+                <h3 class="feature-title">Gemini (Your Account)</h3>
+                <p class="feature-desc">Uses YOUR Gemini/Google account. Optimized for image analysis, multimodal tasks, visual understanding, and creative content. Logs into your Google account to provide responses.</p>
+                <div class="credential-status not-connected" id="geminiStatus">
+                    <i class="fas fa-times-circle"></i> Not configured
+                </div>
             </div>
         </div>
     </main>
     
     <footer>
         <div class="container">
-            <p>Multi-AI Assistant | ChatGPT + DeepSeek + Gemini | Public Access</p>
+            <p>Your Personal AI Assistant | Uses YOUR ChatGPT, DeepSeek & Gemini Accounts</p>
             <p style="font-size: 12px; margin-top: 5px;">
-                <i class="fas fa-user-shield"></i> Admin: imulla311@gmail.com
+                <i class="fas fa-user-shield"></i> Your credentials are encrypted and stored securely
             </p>
         </div>
     </footer>
 
+    <!-- Setup Credentials Modal -->
+    <div id="setupModal" class="modal">
+        <div class="modal-content">
+            <h2><i class="fas fa-key"></i> Setup Your AI Credentials</h2>
+            <p>Add your login credentials for each AI service</p>
+            
+            <div class="api-input-group">
+                <label for="chatgptEmail">
+                    <i class="fas fa-comment" style="color: #10a37f;"></i> ChatGPT Email
+                </label>
+                <input type="email" id="chatgptEmail" placeholder="your-chatgpt-email@gmail.com">
+                <div class="key-status">
+                    <i class="fas fa-info-circle"></i> Your ChatGPT login email
+                </div>
+            </div>
+            
+            <div class="api-input-group">
+                <label for="chatgptPassword">
+                    <i class="fas fa-comment" style="color: #10a37f;"></i> ChatGPT Password
+                </label>
+                <input type="password" id="chatgptPassword" placeholder="••••••••">
+            </div>
+            
+            <div class="api-input-group">
+                <label for="deepseekEmail">
+                    <i class="fas fa-code" style="color: #4f46e5;"></i> DeepSeek Email
+                </label>
+                <input type="email" id="deepseekEmail" placeholder="your-deepseek-email@gmail.com">
+            </div>
+            
+            <div class="api-input-group">
+                <label for="deepseekPassword">
+                    <i class="fas fa-code" style="color: #4f46e5;"></i> DeepSeek Password
+                </label>
+                <input type="password" id="deepseekPassword" placeholder="••••••••">
+            </div>
+            
+            <div class="api-input-group">
+                <label for="geminiEmail">
+                    <i class="fas fa-image" style="color: #ea4335;"></i> Gemini/Google Email
+                </label>
+                <input type="email" id="geminiEmail" placeholder="your-google-email@gmail.com">
+            </div>
+            
+            <div class="api-input-group">
+                <label for="geminiPassword">
+                    <i class="fas fa-image" style="color: #ea4335;"></i> Gemini/Google Password
+                </label>
+                <input type="password" id="geminiPassword" placeholder="••••••••">
+            </div>
+            
+            <div class="note">
+                <i class="fas fa-shield-alt"></i> 
+                Credentials are encrypted and stored in your browser only
+            </div>
+            
+            <div class="modal-buttons">
+                <button id="saveCredentials" class="primary-btn">
+                    <i class="fas fa-save"></i> Save Credentials
+                </button>
+                <button id="cancelSetup" class="secondary-btn">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // ========== ADMIN CREDENTIALS ==========
+        // ========== CONFIGURATION ==========
         const ADMIN_EMAIL = "imulla311@gmail.com";
         const ADMIN_PASSWORD = "Imulla@311";
-        
-        // ========== REMEMBER ME SETTINGS ==========
         const REMEMBER_DAYS = 30;
         
-        // ========== API ENDPOINTS ==========
-        // These endpoints will be on your Vercel backend
+        // API Endpoints
         const API_ENDPOINTS = {
-            chat: '/api/chat', // Endpoint to handle AI requests
-            status: '/api/status' // Endpoint to check API status
+            chat: '/api/chat',
+            status: '/api/status',
+            setup: '/api/setup'
         };
         
         // ========== APP STATE ==========
@@ -913,79 +1023,70 @@
         let selectedAI = 'auto';
         let isProcessing = false;
         let currentUserEmail = '';
-        let apiKeysAvailable = false;
+        let userCredentials = {};
         
         // ========== DOM ELEMENTS ==========
         const chatMessages = document.getElementById('chatMessages');
         const userInput = document.getElementById('userInput');
         const sendBtn = document.getElementById('sendBtn');
         const aiButtons = document.querySelectorAll('.ai-btn');
-        const aiName = document.querySelector('.ai-name');
-        const aiDescription = document.querySelector('.ai-description');
-        const aiIcon = document.querySelector('.ai-icon');
-        const statusIndicator = document.getElementById('statusIndicator');
         const statusText = document.getElementById('statusText');
         const apiStatusText = document.getElementById('apiStatusText');
-        const quickLoginBtn = document.getElementById('quickLogin');
         const loginModal = document.getElementById('loginModal');
+        const setupModal = document.getElementById('setupModal');
         const loginEmail = document.getElementById('loginEmail');
         const loginPassword = document.getElementById('loginPassword');
         const loginBtn = document.getElementById('loginBtn');
         const loginError = document.getElementById('loginError');
-        const rememberMeCheckbox = document.getElementById('rememberMe');
+        const quickLoginBtn = document.getElementById('quickLogin');
+        const setupCredentialsBtn = document.getElementById('setupCredentials');
+        const testConnectionBtn = document.getElementById('testConnection');
+        const accountInfo = document.getElementById('accountInfo');
+        
+        // Credential inputs
+        const chatgptEmail = document.getElementById('chatgptEmail');
+        const chatgptPassword = document.getElementById('chatgptPassword');
+        const deepseekEmail = document.getElementById('deepseekEmail');
+        const deepseekPassword = document.getElementById('deepseekPassword');
+        const geminiEmail = document.getElementById('geminiEmail');
+        const geminiPassword = document.getElementById('geminiPassword');
+        const saveCredentialsBtn = document.getElementById('saveCredentials');
+        const cancelSetupBtn = document.getElementById('cancelSetup');
+        
+        // Status indicators
+        const chatgptStatus = document.getElementById('chatgptStatus');
+        const deepseekStatus = document.getElementById('deepseekStatus');
+        const geminiStatus = document.getElementById('geminiStatus');
         
         // ========== INITIALIZATION ==========
-        document.addEventListener('DOMContentLoaded', async () => {
-            console.log("🚀 Multi-AI Assistant Initialized");
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("🤖 Your Personal AI Assistant Initialized");
             
+            // Setup event listeners
             setupEventListeners();
-            await checkApiStatus();
+            
+            // Check if already logged in
             checkExistingLogin();
+            
+            // Load saved credentials
+            loadSavedCredentials();
+            
+            // Check connection status
+            checkConnectionStatus();
             
             // Auto-resize textarea
             userInput.addEventListener('input', function() {
                 this.style.height = 'auto';
-                this.style.height = (this.scrollHeight) + 'px';
+                this.style.height = this.scrollHeight + 'px';
             });
         });
-        
-        // ========== CHECK API STATUS ==========
-        async function checkApiStatus() {
-            try {
-                console.log("🔍 Checking API status...");
-                const response = await fetch(API_ENDPOINTS.status);
-                if (response.ok) {
-                    const data = await response.json();
-                    apiKeysAvailable = data.available || false;
-                    console.log("✅ API Status:", data.message || "Connected");
-                } else {
-                    console.log("❌ API Status Check Failed");
-                    apiKeysAvailable = false;
-                }
-            } catch (error) {
-                console.log("❌ API Status Error:", error.message);
-                apiKeysAvailable = false;
-            }
-            
-            if (!apiKeysAvailable) {
-                console.log("⚠️ API keys not configured on server");
-                console.log("📝 Setup Instructions:");
-                console.log("1. Go to Vercel Dashboard → Your Project");
-                console.log("2. Go to Settings → Environment Variables");
-                console.log("3. Add these variables:");
-                console.log("   - OPENAI_API_KEY");
-                console.log("   - DEEPSEEK_API_KEY");
-                console.log("   - GEMINI_API_KEY");
-                console.log("4. Redeploy your project");
-            }
-        }
         
         // ========== SETUP EVENT LISTENERS ==========
         function setupEventListeners() {
             // Send message
             sendBtn.addEventListener('click', sendMessage);
             userInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && !e.shiftKey) {
+                if (e.key === 'Enter' && !e.shiftKey && !isProcessing) {
                     e.preventDefault();
                     sendMessage();
                 }
@@ -1003,6 +1104,7 @@
                     this.classList.add('active');
                     selectedAI = this.dataset.ai;
                     updateAIInfo(selectedAI);
+                    showNotification(`Selected: ${getAIName(selectedAI)}`, 'info');
                 });
             });
             
@@ -1019,204 +1121,276 @@
                 loginModal.classList.add('active');
             });
             
-            // Remember me checkbox
-            if (rememberMeCheckbox) {
-                rememberMeCheckbox.addEventListener('change', function() {
-                    console.log('Remember me changed to:', this.checked);
-                });
-            }
+            // Setup credentials button
+            setupCredentialsBtn.addEventListener('click', () => {
+                setupModal.classList.add('active');
+                loadCredentialsIntoForm();
+            });
+            
+            // Test connection button
+            testConnectionBtn.addEventListener('click', testAllConnections);
+            
+            // Save credentials
+            saveCredentialsBtn.addEventListener('click', saveCredentials);
+            cancelSetupBtn.addEventListener('click', () => {
+                setupModal.classList.remove('active');
+            });
         }
         
         // ========== LOGIN HANDLING ==========
         function handleLogin() {
             const email = loginEmail.value.trim();
             const password = loginPassword.value.trim();
-            const rememberMe = rememberMeCheckbox ? rememberMeCheckbox.checked : false;
             
             if (!email || !password) {
-                loginError.textContent = 'Please enter both email and password';
+                loginError.textContent = 'Please enter email and password';
                 loginError.style.display = 'block';
                 return;
             }
             
             if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-                handleSuccessfulLogin(email, true, rememberMe);
+                handleSuccessfulLogin(email, true);
             } else if (email && password) {
-                handleSuccessfulLogin(email, false, rememberMe);
+                handleSuccessfulLogin(email, false);
             } else {
-                loginError.textContent = 'Invalid email or password';
+                loginError.textContent = 'Invalid credentials';
                 loginError.style.display = 'block';
             }
         }
         
-        function handleSuccessfulLogin(email, isAdminUser, rememberMe) {
+        function handleSuccessfulLogin(email, isAdminUser) {
             currentUserEmail = email;
             isAdmin = isAdminUser;
             isLoggedIn = true;
             loginError.style.display = 'none';
             loginModal.classList.remove('active');
             
-            // Save login state
-            const loginData = {
+            // Save to localStorage
+            localStorage.setItem('ai_user', JSON.stringify({
                 email: email,
                 isAdmin: isAdminUser,
                 timestamp: new Date().getTime()
-            };
-            
-            if (rememberMe) {
-                // Long-term storage (30 days)
-                const expiryDate = new Date();
-                expiryDate.setDate(expiryDate.getDate() + REMEMBER_DAYS);
-                loginData.expiry = expiryDate.getTime();
-                
-                localStorage.setItem('multiAI_loginData', JSON.stringify(loginData));
-                localStorage.setItem('multiAI_rememberMe', 'true');
-                console.log('Login saved to localStorage with 30-day expiry');
-            } else {
-                // Session storage
-                sessionStorage.setItem('multiAI_loginData', JSON.stringify(loginData));
-                localStorage.setItem('multiAI_rememberMe', 'false');
-                console.log('Login saved to sessionStorage (browser session only)');
-            }
+            }));
             
             updateUIForLoggedInUser(isAdminUser);
-            showNotification(isAdminUser ? 'Admin logged in successfully!' : `Welcome ${email}!`, 'info');
+            showNotification(isAdminUser ? 'Admin login successful!' : `Welcome ${email}!`, 'success');
+            
+            // Add welcome message
+            const welcomeMsg = `✅ Logged in as ${email}\n\nI will now use YOUR AI accounts to get real answers.\n\n📝 To setup your AI credentials, click "Setup Credentials" button.`;
+            addMessage(welcomeMsg, 'ai', 'system');
         }
         
         function checkExistingLogin() {
-            // Check localStorage first for remember me
-            let loginData = localStorage.getItem('multiAI_loginData');
-            const rememberMe = localStorage.getItem('multiAI_rememberMe') === 'true';
-            
-            // If not in localStorage or remember me is false, check sessionStorage
-            if (!loginData || !rememberMe) {
-                loginData = sessionStorage.getItem('multiAI_loginData');
-            }
-            
-            if (loginData) {
+            const saved = localStorage.getItem('ai_user');
+            if (saved) {
                 try {
-                    const data = JSON.parse(loginData);
-                    
-                    // Check if login has expired
-                    if (data.expiry && data.expiry < new Date().getTime()) {
-                        console.log('Login expired, clearing...');
-                        localStorage.removeItem('multiAI_loginData');
-                        sessionStorage.removeItem('multiAI_loginData');
-                        return;
-                    }
-                    
-                    // Auto-login
+                    const data = JSON.parse(saved);
                     currentUserEmail = data.email;
-                    isLoggedIn = true;
                     isAdmin = data.isAdmin || false;
+                    isLoggedIn = true;
                     loginModal.classList.remove('active');
                     updateUIForLoggedInUser(isAdmin);
                     
-                    showNotification(isAdmin ? 'Welcome back Admin!' : `Welcome back ${data.email}!`, 'info');
-                    
+                    const welcomeMsg = `Welcome back ${data.email}! Ready to use your AI accounts.`;
+                    addMessage(welcomeMsg, 'ai', 'system');
                 } catch (e) {
-                    console.error('Error parsing login data:', e);
+                    console.error('Error loading saved login:', e);
                 }
             }
         }
         
-        function updateUIForLoggedInUser(isAdminUser) {
-            // Enable input and send button
-            userInput.disabled = false;
-            userInput.placeholder = "Type your message here... (Press Shift+Enter for new line)";
-            sendBtn.disabled = false;
-            
-            // Update status
-            statusText.textContent = 'Ready';
-            statusIndicator.querySelector('i').style.color = '#10a37f';
-            
-            // Add logout button
-            addLogoutButton();
-            
-            if (isAdminUser) {
-                // Admin UI
-                document.getElementById('siteTitle').textContent = 'Multi-AI Assistant (Admin)';
-                document.getElementById('openApiConfig').style.display = 'block';
-                apiStatusText.textContent = 'Admin Mode - All APIs Active';
-                aiDescription.textContent = 'Admin mode - All AI services available';
-            } else {
-                // Public user UI
-                document.getElementById('siteTitle').textContent = 'Multi-AI Assistant';
-                document.getElementById('openApiConfig').style.display = 'none';
-                apiStatusText.textContent = 'Public Mode - Real AI Access';
-                aiDescription.textContent = 'Public access - Real AI services';
-            }
-            
-            // Add welcome message to chat
-            const welcomeMsg = isAdminUser 
-                ? `Welcome Admin! You have full access to all AI services.`
-                : `Welcome ${currentUserEmail}! You can now use the AI assistant.`;
-            
-            addMessage(welcomeMsg, 'ai', 'system');
-        }
-        
-        // ========== LOGOUT FUNCTIONALITY ==========
-        function addLogoutButton() {
-            // Check if logout button already exists
-            if (document.getElementById('logoutBtn')) return;
-            
-            const logoutBtn = document.createElement('button');
-            logoutBtn.id = 'logoutBtn';
-            logoutBtn.className = 'api-config-btn';
-            logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
-            logoutBtn.style.marginLeft = '10px';
-            
-            logoutBtn.addEventListener('click', handleLogout);
-            
-            // Insert after API config button
-            const headerActions = document.querySelector('.header-content > div:last-child');
-            if (headerActions) {
-                headerActions.appendChild(logoutBtn);
+        // ========== CREDENTIALS MANAGEMENT ==========
+        function loadSavedCredentials() {
+            const saved = localStorage.getItem('ai_credentials');
+            if (saved) {
+                try {
+                    userCredentials = JSON.parse(saved);
+                    updateCredentialStatus();
+                    console.log('Loaded saved credentials');
+                } catch (e) {
+                    console.error('Error loading credentials:', e);
+                }
             }
         }
         
-        function handleLogout() {
-            // Clear login data
-            localStorage.removeItem('multiAI_loginData');
-            sessionStorage.removeItem('multiAI_loginData');
+        function saveCredentials() {
+            const credentials = {
+                chatgpt: {
+                    email: chatgptEmail.value.trim(),
+                    password: chatgptPassword.value.trim()
+                },
+                deepseek: {
+                    email: deepseekEmail.value.trim(),
+                    password: deepseekPassword.value.trim()
+                },
+                gemini: {
+                    email: geminiEmail.value.trim(),
+                    password: geminiPassword.value.trim()
+                },
+                savedAt: new Date().getTime()
+            };
             
-            // Reset state
-            isLoggedIn = false;
-            isAdmin = false;
-            currentUserEmail = '';
+            // Basic validation
+            let hasAtLeastOne = false;
+            if (credentials.chatgpt.email && credentials.chatgpt.password) hasAtLeastOne = true;
+            if (credentials.deepseek.email && credentials.deepseek.password) hasAtLeastOne = true;
+            if (credentials.gemini.email && credentials.gemini.password) hasAtLeastOne = true;
+            
+            if (!hasAtLeastOne) {
+                showNotification('Please enter at least one set of credentials', 'error');
+                return;
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('ai_credentials', JSON.stringify(credentials));
+            userCredentials = credentials;
             
             // Update UI
-            userInput.disabled = true;
-            userInput.placeholder = "Please login to use the AI assistant...";
-            sendBtn.disabled = true;
+            updateCredentialStatus();
+            setupModal.classList.remove('active');
             
-            document.getElementById('siteTitle').textContent = 'Multi-AI Assistant';
-            document.getElementById('openApiConfig').style.display = 'none';
+            showNotification('Credentials saved successfully!', 'success');
             
-            // Remove logout button
-            const logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn) logoutBtn.remove();
+            // Test connections
+            testAllConnections();
+        }
+        
+        function loadCredentialsIntoForm() {
+            if (userCredentials.chatgpt) {
+                chatgptEmail.value = userCredentials.chatgpt.email || '';
+                chatgptPassword.value = userCredentials.chatgpt.password || '';
+            }
+            if (userCredentials.deepseek) {
+                deepseekEmail.value = userCredentials.deepseek.email || '';
+                deepseekPassword.value = userCredentials.deepseek.password || '';
+            }
+            if (userCredentials.gemini) {
+                geminiEmail.value = userCredentials.gemini.email || '';
+                geminiPassword.value = userCredentials.gemini.password || '';
+            }
+        }
+        
+        function updateCredentialStatus() {
+            // Update ChatGPT status
+            if (userCredentials.chatgpt && userCredentials.chatgpt.email && userCredentials.chatgpt.password) {
+                chatgptStatus.className = 'credential-status connected';
+                chatgptStatus.innerHTML = `<i class="fas fa-check-circle"></i> Configured: ${userCredentials.chatgpt.email.substring(0, 3)}***@***`;
+            } else {
+                chatgptStatus.className = 'credential-status not-connected';
+                chatgptStatus.innerHTML = '<i class="fas fa-times-circle"></i> Not configured';
+            }
             
-            // Reset AI selector
-            aiButtons.forEach(btn => btn.classList.remove('active'));
-            document.querySelector('.ai-btn[data-ai="auto"]').classList.add('active');
-            selectedAI = 'auto';
+            // Update DeepSeek status
+            if (userCredentials.deepseek && userCredentials.deepseek.email && userCredentials.deepseek.password) {
+                deepseekStatus.className = 'credential-status connected';
+                deepseekStatus.innerHTML = `<i class="fas fa-check-circle"></i> Configured: ${userCredentials.deepseek.email.substring(0, 3)}***@***`;
+            } else {
+                deepseekStatus.className = 'credential-status not-connected';
+                deepseekStatus.innerHTML = '<i class="fas fa-times-circle"></i> Not configured';
+            }
             
-            // Update status
-            statusText.textContent = 'Not Logged In';
-            statusIndicator.querySelector('i').style.color = '#ef4444';
-            apiStatusText.textContent = 'Please login to use the assistant';
-            aiDescription.textContent = 'Login to access real AI capabilities';
-            aiIcon.className = 'ai-icon chatgpt-icon';
-            aiIcon.innerHTML = '<i class="fas fa-magic"></i>';
-            aiName.textContent = 'Auto AI Selector';
+            // Update Gemini status
+            if (userCredentials.gemini && userCredentials.gemini.email && userCredentials.gemini.password) {
+                geminiStatus.className = 'credential-status connected';
+                geminiStatus.innerHTML = `<i class="fas fa-check-circle"></i> Configured: ${userCredentials.gemini.email.substring(0, 3)}***@***`;
+            } else {
+                geminiStatus.className = 'credential-status not-connected';
+                geminiStatus.innerHTML = '<i class="fas fa-times-circle"></i> Not configured';
+            }
             
-            // Show logout message
-            addMessage('You have been logged out. Please login again to use the AI assistant.', 'ai', 'system');
-            showNotification('Logged out successfully', 'info');
+            // Update account info
+            const configuredCount = [
+                userCredentials.chatgpt,
+                userCredentials.deepseek, 
+                userCredentials.gemini
+            ].filter(c => c && c.email && c.password).length;
             
-            // Show login modal
-            loginModal.classList.add('active');
+            accountInfo.textContent = `${configuredCount} of 3 AI accounts configured`;
+        }
+        
+        // ========== CONNECTION TESTING ==========
+        async function testAllConnections() {
+            if (!isLoggedIn) {
+                showNotification('Please login first', 'error');
+                loginModal.classList.add('active');
+                return;
+            }
+            
+            showNotification('Testing AI connections...', 'info');
+            updateStatus('processing', 'Testing connections');
+            
+            // Test each configured AI
+            const tests = [];
+            
+            if (userCredentials.chatgpt && userCredentials.chatgpt.email) {
+                tests.push(testAIConnection('chatgpt', 'ChatGPT'));
+            }
+            
+            if (userCredentials.deepseek && userCredentials.deepseek.email) {
+                tests.push(testAIConnection('deepseek', 'DeepSeek'));
+            }
+            
+            if (userCredentials.gemini && userCredentials.gemini.email) {
+                tests.push(testAIConnection('gemini', 'Gemini'));
+            }
+            
+            if (tests.length === 0) {
+                showNotification('No credentials configured. Please setup credentials first.', 'error');
+                updateStatus('ready', 'Ready');
+                return;
+            }
+            
+            try {
+                await Promise.all(tests);
+                showNotification('Connection tests completed', 'success');
+            } catch (error) {
+                console.error('Connection tests failed:', error);
+            } finally {
+                updateStatus('ready', 'Ready');
+            }
+        }
+        
+        async function testAIConnection(aiType, aiName) {
+            try {
+                const response = await fetch(API_ENDPOINTS.chat, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: `Test connection to ${aiName}`,
+                        ai: aiType,
+                        test: true
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    console.log(`✅ ${aiName} connection test passed`);
+                    return true;
+                } else {
+                    console.log(`❌ ${aiName} connection test failed: ${data.error}`);
+                    return false;
+                }
+            } catch (error) {
+                console.error(`❌ ${aiName} connection error:`, error);
+                return false;
+            }
+        }
+        
+        function checkConnectionStatus() {
+            const hasCredentials = userCredentials && (
+                (userCredentials.chatgpt && userCredentials.chatgpt.email) ||
+                (userCredentials.deepseek && userCredentials.deepseek.email) ||
+                (userCredentials.gemini && userCredentials.gemini.email)
+            );
+            
+            if (hasCredentials) {
+                apiStatusText.innerHTML = `<span style="color:#10a37f">✅ Credentials configured</span>`;
+            } else {
+                apiStatusText.innerHTML = `<span style="color:#ef4444">⚠️ No credentials setup</span>`;
+            }
         }
         
         // ========== MESSAGE HANDLING ==========
@@ -1224,6 +1398,19 @@
             if (!isLoggedIn) {
                 showNotification('Please login first', 'error');
                 loginModal.classList.add('active');
+                return;
+            }
+            
+            // Check if credentials are configured
+            const hasCredentials = userCredentials && (
+                (userCredentials.chatgpt && userCredentials.chatgpt.email) ||
+                (userCredentials.deepseek && userCredentials.deepseek.email) ||
+                (userCredentials.gemini && userCredentials.gemini.email)
+            );
+            
+            if (!hasCredentials) {
+                showNotification('Please setup your AI credentials first', 'error');
+                setupModal.classList.add('active');
                 return;
             }
             
@@ -1240,13 +1427,23 @@
             // Determine AI to use
             const aiToUse = selectedAI === 'auto' ? determineAI(message) : selectedAI;
             
+            // Check if credentials exist for this AI
+            if (aiToUse !== 'auto') {
+                const creds = userCredentials[aiToUse];
+                if (!creds || !creds.email || !creds.password) {
+                    addMessage(`⚠️ No credentials configured for ${getAIName(aiToUse)}. Please setup credentials in the settings.`, 'ai', 'system');
+                    showNotification(`No credentials for ${getAIName(aiToUse)}`, 'error');
+                    return;
+                }
+            }
+            
             // Show typing indicator
             showTypingIndicator(aiToUse);
             
             // Set processing state
             isProcessing = true;
             sendBtn.disabled = true;
-            updateStatus('processing', `Processing with ${aiToUse}...`);
+            updateStatus('processing', `Connecting to ${getAIName(aiToUse)}...`);
             
             try {
                 // Call backend API
@@ -1255,28 +1452,25 @@
                 removeTypingIndicator();
                 addMessage(response, 'ai', aiToUse);
                 updateStatus('ready', 'Ready');
-                showNotification('Response received', 'info');
+                showNotification(`Response from ${getAIName(aiToUse)} received`, 'success');
                 
             } catch (error) {
                 console.error('API Error:', error);
                 removeTypingIndicator();
                 
-                // User-friendly error messages
                 let errorMessage = '';
-                if (error.message.includes('401')) {
-                    errorMessage = `API key error for ${aiToUse}. The API key may be invalid or expired.`;
+                if (error.message.includes('401') || error.message.includes('credentials')) {
+                    errorMessage = `❌ Login failed for ${getAIName(aiToUse)}. Please check your credentials.\n\nError: ${error.message}`;
                 } else if (error.message.includes('429')) {
-                    errorMessage = 'Rate limit exceeded. Please wait a moment before trying again.';
+                    errorMessage = '⏳ Rate limit exceeded. Please wait a moment before trying again.';
                 } else if (error.message.includes('Network')) {
-                    errorMessage = 'Network error. Please check your internet connection.';
-                } else if (error.message.includes('API key')) {
-                    errorMessage = `Please configure ${aiToUse} API key in Vercel environment variables.`;
+                    errorMessage = '🌐 Network error. Please check your internet connection.';
                 } else {
-                    errorMessage = `Error: ${error.message}`;
+                    errorMessage = `⚠️ Error: ${error.message}`;
                 }
                 
                 addMessage(errorMessage, 'ai', aiToUse);
-                updateStatus('error', 'API Error');
+                updateStatus('error', 'Connection Error');
                 showNotification('Failed to get response', 'error');
                 
             } finally {
@@ -1287,72 +1481,136 @@
         }
         
         // ========== BACKEND API CALL ==========
-        // async function callBackendAPI(message, aiType) {
-        //     console.log(`📞 Calling ${aiType} via backend...`);
+        async function callBackendAPI(message, aiType) {
+            console.log(`📤 Sending to ${aiType}: ${message.substring(0, 50)}...`);
             
-        //     const response = await fetch(API_ENDPOINTS.chat, {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify({
-        //             message: message,
-        //             ai: aiType,
-        //             user: currentUserEmail
-        //         })
-        //     });
+            const response = await fetch(API_ENDPOINTS.chat, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: message,
+                    ai: aiType,
+                    user: currentUserEmail,
+                    credentials: userCredentials[aiType] || null
+                })
+            });
             
-        //     if (!response.ok) {
-        //         const errorText = await response.text();
-        //         console.error(`❌ Backend API Error:`, errorText);
-        //         throw new Error(`${response.status}: ${response.statusText}`);
-        //     }
+            const data = await response.json();
             
-        //     const data = await response.json();
-        //     console.log(`✅ Backend Response:`, data);
+            if (!response.ok) {
+                throw new Error(data.error || `HTTP ${response.status}`);
+            }
             
-        //     if (data.error) {
-        //         throw new Error(data.error);
-        //     }
+            if (!data.success) {
+                throw new Error(data.error || 'API error');
+            }
             
-        //     return data.response || data.message || "No response from AI";
-        // }
-
-        // Replace the callBackendAPI function with this:
-async function callBackendAPI(message, aiType) {
-  console.log(`Calling ${aiType}...`);
-  
-  try {
-    const response = await fetch(API_ENDPOINTS.chat, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        message: message,
-        ai: aiType,
-        user: currentUserEmail
-      })
-    });
-    
-    const data = await response.json();
-    
-    if (!response.ok) {
-      // Even if error, we get fallback response
-      return data.response || `Error: ${response.status}`;
-    }
-    
-    return data.response || 'No response received';
-    
-  } catch (error) {
-    console.error('Network error:', error);
-    
-    // Return helpful message
-    return `🌐 Network Error\n\nI couldn't connect to the server. Here's what you can do:\n\n1. Check your internet connection\n2. Refresh the page\n3. Contact support if problem persists\n\nYour message was: "${message.substring(0, 100)}"`;
-  }
-}
+            return data.response;
+        }
         
-        // ========== UI HELPER FUNCTIONS ==========
+        // ========== AI DETECTION LOGIC ==========
+        function determineAI(query) {
+            const lowerQuery = query.toLowerCase();
+            
+            // Coding/Technical queries → DeepSeek
+            if (/code|program|function|algorithm|debug|javascript|python|html|css|java|c\+\+|sql|database|api|git|terminal|error|bug|fix|compile|syntax/i.test(lowerQuery)) {
+                return 'deepseek';
+            }
+            
+            // Math queries → DeepSeek
+            if (/math|calculate|equation|formula|statistic|probability|algebra|calculus|geometry|trigonometry|solve.*problem/i.test(lowerQuery)) {
+                return 'deepseek';
+            }
+            
+            // Image/Visual queries → Gemini
+            if (/image|picture|photo|visual|draw|paint|sketch|generate.*image|describe.*image|analyze.*image|vision|look.*like|design|graphic/i.test(lowerQuery)) {
+                return 'gemini';
+            }
+            
+            // Writing queries → ChatGPT
+            if (/write|essay|story|poem|creative|article|blog|email|letter|content|brainstorm|paraphrase|rewrite|translate|summary|report/i.test(lowerQuery)) {
+                return 'chatgpt';
+            }
+            
+            // Default to ChatGPT if credentials exist, else check what's available
+            if (userCredentials.chatgpt && userCredentials.chatgpt.email) {
+                return 'chatgpt';
+            } else if (userCredentials.deepseek && userCredentials.deepseek.email) {
+                return 'deepseek';
+            } else if (userCredentials.gemini && userCredentials.gemini.email) {
+                return 'gemini';
+            }
+            
+            return 'chatgpt';
+        }
+        
+        function getAIName(aiType) {
+            const names = {
+                chatgpt: 'ChatGPT',
+                deepseek: 'DeepSeek',
+                gemini: 'Gemini',
+                auto: 'Auto Select'
+            };
+            return names[aiType] || aiType;
+        }
+        
+        // ========== UI UPDATES ==========
+        function updateUIForLoggedInUser(isAdminUser) {
+            userInput.disabled = false;
+            userInput.placeholder = "Ask anything... I'll use YOUR AI accounts to answer (Shift+Enter for new line)";
+            sendBtn.disabled = false;
+            
+            statusText.textContent = 'Ready';
+            statusIndicator.querySelector('i').style.color = '#10a37f';
+            
+            setupCredentialsBtn.style.display = 'block';
+            
+            if (isAdminUser) {
+                document.getElementById('siteTitle').textContent = 'Your AI Assistant (Admin)';
+                apiStatusText.innerHTML = '🛡️ <strong>Admin Mode</strong> - Full access';
+                accountInfo.textContent = 'Admin account';
+            } else {
+                document.getElementById('siteTitle').textContent = 'Your AI Assistant';
+                apiStatusText.innerHTML = '👤 <strong>User Mode</strong> - Your AI accounts';
+                accountInfo.textContent = `Logged in as ${currentUserEmail}`;
+            }
+        }
+        
+        function updateAIInfo(ai) {
+            const aiName = document.querySelector('.ai-name');
+            const aiIcon = document.querySelector('.ai-icon');
+            const aiDesc = document.querySelector('.ai-description');
+            
+            switch(ai) {
+                case 'chatgpt':
+                    aiName.textContent = 'ChatGPT (Your Account)';
+                    aiIcon.className = 'ai-icon chatgpt-icon';
+                    aiIcon.innerHTML = '<i class="fas fa-comment"></i>';
+                    aiDesc.textContent = 'Using YOUR ChatGPT account';
+                    break;
+                case 'deepseek':
+                    aiName.textContent = 'DeepSeek (Your Account)';
+                    aiIcon.className = 'ai-icon deepseek-icon';
+                    aiIcon.innerHTML = '<i class="fas fa-code"></i>';
+                    aiDesc.textContent = 'Using YOUR DeepSeek account';
+                    break;
+                case 'gemini':
+                    aiName.textContent = 'Gemini (Your Account)';
+                    aiIcon.className = 'ai-icon gemini-icon';
+                    aiIcon.innerHTML = '<i class="fas fa-image"></i>';
+                    aiDesc.textContent = 'Using YOUR Gemini account';
+                    break;
+                default:
+                    aiName.textContent = 'Auto AI Selector';
+                    aiIcon.className = 'ai-icon chatgpt-icon';
+                    aiIcon.innerHTML = '<i class="fas fa-magic"></i>';
+                    aiDesc.textContent = 'Automatically selects best AI';
+            }
+        }
+        
+        // ========== MESSAGE DISPLAY ==========
         function addMessage(text, sender, aiUsed = null) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${sender}-message`;
@@ -1365,9 +1623,12 @@ async function callBackendAPI(message, aiType) {
                     ? '<i class="fas fa-code"></i>'
                     : aiUsed === 'gemini'
                         ? '<i class="fas fa-image"></i>'
-                        : '<i class="fas fa-robot"></i>';
+                        : aiUsed === 'system'
+                            ? '<i class="fas fa-info-circle"></i>'
+                            : '<i class="fas fa-robot"></i>';
             
             let avatarClass = sender === 'user' ? 'user-avatar' : 'ai-avatar';
+            if (aiUsed === 'system') avatarClass = 'ai-avatar';
             
             messageDiv.innerHTML = `
                 <div class="avatar ${avatarClass}">
@@ -1375,7 +1636,7 @@ async function callBackendAPI(message, aiType) {
                 </div>
                 <div class="message-content">
                     <div class="message-text">${formatMessage(text)}</div>
-                    <div class="message-time">${time} ${aiUsed && sender === 'ai' ? `• ${aiUsed.toUpperCase()}` : ''}</div>
+                    <div class="message-time">${time} ${aiUsed && sender === 'ai' ? `• ${getAIName(aiUsed)}` : ''}</div>
                 </div>
             `;
             
@@ -1384,7 +1645,8 @@ async function callBackendAPI(message, aiType) {
         }
         
         function formatMessage(text) {
-            // Convert markdown-style code blocks
+            if (!text) return '';
+            
             let formattedText = text
                 .replace(/```(\w+)?\n([\s\S]*?)```/g, 
                     '<pre><code class="language-$1">$2</code></pre>')
@@ -1392,7 +1654,6 @@ async function callBackendAPI(message, aiType) {
                     '<code>$1</code>')
                 .replace(/\n/g, '<br>');
             
-            // Convert URLs to links
             formattedText = formattedText.replace(
                 /(https?:\/\/[^\s<]+[^\s<.,:;!?)])/g, 
                 '<a href="$1" target="_blank" rel="noopener">$1</a>'
@@ -1421,6 +1682,9 @@ async function callBackendAPI(message, aiType) {
                         <div class="typing-dot"></div>
                         <div class="typing-dot"></div>
                         <div class="typing-dot"></div>
+                    </div>
+                    <div class="message-time" style="margin-top: 10px; font-size: 11px;">
+                        <i class="fas fa-sign-in-alt"></i> Logging into your ${getAIName(ai)} account...
                     </div>
                 </div>
             `;
@@ -1454,20 +1718,18 @@ async function callBackendAPI(message, aiType) {
         }
         
         function showNotification(message, type = 'info') {
-            // Remove existing notification
             const existing = document.querySelector('.notification');
             if (existing) existing.remove();
             
             const notification = document.createElement('div');
             notification.className = `notification ${type === 'error' ? 'error' : ''}`;
             notification.innerHTML = `
-                <i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i>
+                <i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'}"></i>
                 <span>${message}</span>
             `;
             
             document.body.appendChild(notification);
             
-            // Auto-remove after 3 seconds
             setTimeout(() => {
                 notification.style.opacity = '0';
                 notification.style.transform = 'translateX(100%)';
@@ -1476,6 +1738,4 @@ async function callBackendAPI(message, aiType) {
         }
     </script>
 </body>
-
 </html>
-
