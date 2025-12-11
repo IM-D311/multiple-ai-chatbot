@@ -1318,89 +1318,39 @@
         //     return data.response || data.message || "No response from AI";
         // }
 
-        async function callBackendAPI(message, aiType) {
-    console.log(`📞 Calling ${aiType} via backend...`);
-    
+        // Replace the callBackendAPI function with this:
+async function callBackendAPI(message, aiType) {
+  console.log(`Calling ${aiType}...`);
+  
+  try {
     const response = await fetch(API_ENDPOINTS.chat, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            message: message,
-            ai: aiType,
-            user: currentUserEmail
-        })
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: message,
+        ai: aiType,
+        user: currentUserEmail
+      })
     });
     
-    if (!response.ok) {
-        const errorText = await response.text();
-        console.error(`❌ Backend API Error:`, errorText);
-        throw new Error(`${response.status}: ${response.statusText}`);
-    }
-    
     const data = await response.json();
-    console.log(`✅ Backend Response:`, data);
     
-    if (data.error) {
-        throw new Error(data.error);
+    if (!response.ok) {
+      // Even if error, we get fallback response
+      return data.response || `Error: ${response.status}`;
     }
     
-    // FIX: Return the response from the correct field
-    return data.response || data.reply || data.message || "No response from AI";
+    return data.response || 'No response received';
+    
+  } catch (error) {
+    console.error('Network error:', error);
+    
+    // Return helpful message
+    return `🌐 Network Error\n\nI couldn't connect to the server. Here's what you can do:\n\n1. Check your internet connection\n2. Refresh the page\n3. Contact support if problem persists\n\nYour message was: "${message.substring(0, 100)}"`;
+  }
 }
-        
-        // ========== AI SELECTION LOGIC ==========
-        function determineAI(query) {
-            const lowerQuery = query.toLowerCase();
-            
-            // Coding/Technical queries → DeepSeek
-            if (/code|program|function|algorithm|debug|javascript|python|html|css|java|c\+\+|sql|database|api|git|terminal|error|bug|fix/i.test(lowerQuery)) {
-                return 'deepseek';
-            }
-            
-            // Math queries → DeepSeek
-            if (/math|calculate|equation|formula|statistic|probability|algebra|calculus|solve.*problem/i.test(lowerQuery)) {
-                return 'deepseek';
-            }
-            
-            // Image/Visual queries → Gemini
-            if (/image|picture|photo|visual|draw|generate.*image|describe.*image|analyze.*image|vision|look.*like/i.test(lowerQuery)) {
-                return 'gemini';
-            }
-            
-            // Writing/Creative queries → ChatGPT
-            if (/write|essay|story|poem|creative|article|blog|email|letter|content|brainstorm|paraphrase|rewrite|translate/i.test(lowerQuery)) {
-                return 'chatgpt';
-            }
-            
-            // Default to ChatGPT
-            return 'chatgpt';
-        }
-        
-        function updateAIInfo(ai) {
-            switch(ai) {
-                case 'chatgpt':
-                    aiName.textContent = 'ChatGPT';
-                    aiIcon.className = 'ai-icon chatgpt-icon';
-                    aiIcon.innerHTML = '<i class="fas fa-comment"></i>';
-                    break;
-                case 'deepseek':
-                    aiName.textContent = 'DeepSeek';
-                    aiIcon.className = 'ai-icon deepseek-icon';
-                    aiIcon.innerHTML = '<i class="fas fa-code"></i>';
-                    break;
-                case 'gemini':
-                    aiName.textContent = 'Gemini';
-                    aiIcon.className = 'ai-icon gemini-icon';
-                    aiIcon.innerHTML = '<i class="fas fa-image"></i>';
-                    break;
-                default:
-                    aiName.textContent = 'Auto AI Selector';
-                    aiIcon.className = 'ai-icon chatgpt-icon';
-                    aiIcon.innerHTML = '<i class="fas fa-magic"></i>';
-            }
-        }
         
         // ========== UI HELPER FUNCTIONS ==========
         function addMessage(text, sender, aiUsed = null) {
@@ -1528,3 +1478,4 @@
 </body>
 
 </html>
+
