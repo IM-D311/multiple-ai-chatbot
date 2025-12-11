@@ -1,13 +1,11 @@
 {
   "name": "multi-ai-chatbot",
   "version": "1.0.0",
-  "description": "FREE Multi-AI Chat Assistant",
-  "main": "index.html",
-  "scripts": {
-    "dev": "vercel dev",
-    "deploy": "vercel --prod"
+  "type": "module",
+  "dependencies": {
+    "@sparticuz/chromium": "^116.0.1",
+    "puppeteer-core": "^21.0.0"
   },
-  "dependencies": {},
   "engines": {
     "node": ">=18"
   }
